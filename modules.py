@@ -42,5 +42,20 @@ class Channel(nn.Module):
         
     def forward(self, x):
         noise = self.p * torch.randn(x.size()).type(type(x.data))
-        noise = Variable(noise, requires_grad=False)
+        noise = Variable(noise.cuda(), requires_grad=False)
         return x + noise
+    
+class RepeatEncoder(nn.Module):
+    def __init__(self, n):
+        super(RepeatEncoder, self).__init__()
+        self.n = n
+    def forward(self, x):
+        x = x.repeat(1, self.n).view(x.size(0), -1)
+        return 2*x -1
+        
+class RepeatDecoder(nn.Module):
+    def __init__(self, n):
+        super(RepeatDecoder, self).__init__()
+        self.n = n
+    def forward(self, x):
+        return x.view(x.size(0), self.n, -1).mean(dim=1)
