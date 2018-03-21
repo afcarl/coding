@@ -51,6 +51,8 @@ class BSChannel(nn.Module):
         self.p = p
         
     def forward(self, x):
+        x.data[x.data > 0] = 1
+        x.data[x.data < 0] = -1
         noise = 2 * torch.bernoulli((1 - self.p) * torch.ones(x.size())) - 1
         noise = Variable(noise.cuda(), requires_grad=False)
         return x * noise
