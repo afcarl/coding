@@ -35,15 +35,25 @@ class Net(nn.Module):
         else:
             return x
 
-class Channel(nn.Module):
+class AWNGChannel(nn.Module):
     def __init__(self, p):
-        super(Channel, self).__init__()
+        super(AWNGChannel, self).__init__()
         self.p = p
         
     def forward(self, x):
         noise = self.p * torch.randn(x.size()).type(type(x.data))
         noise = Variable(noise.cuda(), requires_grad=False)
         return x + noise
+    
+class BSChannel(nn.Module):
+    def __init__(self, p):
+        super(BSChannel, self).__init__()
+        self.p = p
+        
+    def forward(self, x):
+        noise = 2 * torch.bernoulli((1 - self.p) * torch.ones(x.size())) - 1
+        noise = Variable(noise.cuda(), requires_grad=False)
+        return x * noise
     
 class RepeatEncoder(nn.Module):
     def __init__(self, n):
