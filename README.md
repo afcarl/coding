@@ -1,4 +1,4 @@
-The code for "Cooperative learning of encoding and decoding" project, information and coding theory course 2018
+The code for "Cooperative learning of encoding and decoding" project, information and coding theory course 2018. Dependencies: python, numpy, matplotlib, pytorch, pyldpc.
 
 overfitting.ipynb : comparing fixed and random train data
 
